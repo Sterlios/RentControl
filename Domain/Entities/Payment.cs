@@ -12,6 +12,7 @@ namespace Domain.Entities
         public Money Money { get; private set; }
         public PaymentStatus Status { get; private set; }
         public DateOnly PaidDate { get; private set; }
-        public string Link { get; private set; }
+        public string InvoiceLink { get; private set; }
+        public string BillLink { get; private set; }
     }
 }
