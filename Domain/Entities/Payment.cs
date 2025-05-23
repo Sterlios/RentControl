@@ -3,20 +3,21 @@ using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
-    internal class Payment
+    public class Payment
     {
         public Guid Id { get; private set; }
         public PaymentCategory Category { get; private set; }
-        public DateOnly InvoiceDate { get; private set; }
-        public DateOnly ExpiredDate { get; private set; }
+        public DateTime InvoiceDate { get; private set; }
+        public DateTime ExpiredDate { get; private set; }
         public Money Money { get; private set; }
         public string InvoiceLink { get; private set; }
         public PaymentStatus Status { get; private set; }
-        public DateOnly PaidDate { get; private set; }
+        public DateTime PaidDate { get; private set; }
         public string BillLink { get; private set; }
 
-        public Payment(PaymentCategory category, DateOnly invoiceDate, DateOnly expiredDate, Money money, string invoiceLink)
+        public Payment(Guid id, PaymentCategory category, DateTime invoiceDate, DateTime expiredDate, Money money, string invoiceLink)
         {
+            Id = id;
             Category = category;
             InvoiceDate = invoiceDate;
             ExpiredDate = expiredDate;
@@ -25,13 +26,13 @@ namespace Domain.Entities
             Status = PaymentStatus.Unpaid;
         }
 
-        public void SetId(Guid id) =>
-            Id = id;
-
-        public void MarkAsPaid(DateOnly paidDate, string billLink)
+        public void MarkAsPaid(DateTime paidDate, string billLink)
         {
             if (Status == PaymentStatus.Paid)
                 throw new InvalidOperationException("Payment is already paid");
+
+            if (string.IsNullOrWhiteSpace(billLink))
+                throw new ArgumentException($"'{nameof(billLink)}' cannot be null or whitespace.", nameof(billLink));
 
             Status = PaymentStatus.Paid;
             PaidDate = paidDate;
@@ -40,7 +41,8 @@ namespace Domain.Entities
 
         public void MarkAsOverdue()
         {
-            if (DateTime.Today > DateOnly.ToDateTime(ExpiredDate))
+            if (DateTime.Today > ExpiredDate && Status == PaymentStatus.Unpaid)
+                Status = PaymentStatus.Overdue;
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace Domain.ValueObjects
 {
-    public struct Address
+    public readonly struct Address(string country, string city, string region, string street, string zipCode, string building, string apartment)
     {
-        public string Country { get; private set; }
-        public string City { get; private set; }
-        public string Region { get; private set; }
-        public string Street { get; private set; }
-        public string ZipCode { get; private set; }
-        public string Building { get; private set; }
-        public string Apartment { get; private set; }
+        public string Country { get; } = country;
+        public string City { get; } = city;
+        public string Region { get; } = region;
+        public string Street { get; } = street;
+        public string ZipCode { get; } = zipCode;
+        public string Building { get; } = building;
+        public string Apartment { get; } = apartment;
     }
 }

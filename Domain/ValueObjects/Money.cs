@@ -2,9 +2,9 @@
 
 namespace Domain.ValueObjects
 {
-    public struct Money
+    public readonly struct Money(decimal amount, Currency currency)
     {
-        public decimal Amount { get; private set; }
-        public Currency Currency { get; private set; }
+        public decimal Amount { get; } = amount;
+        public Currency Currency { get; } = currency;
     }
 }

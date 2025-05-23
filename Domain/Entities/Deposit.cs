@@ -4,8 +4,15 @@ namespace Domain.Entities
 {
     public class Deposit
     {
-        public int Guid { get; private set; }
-        public Money Money { get; private set; }
-        public string Link { get; private set; }
+        public Deposit(Guid id, Money money, string link)
+        {
+            Id = id;
+            Money = money;
+            Link = link;
+        }
+
+        public Guid Id { get; }
+        public Money Money { get; }
+        public string Link { get; }
     }
 }
